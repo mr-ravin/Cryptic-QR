@@ -8,6 +8,21 @@ def generate_qr(text,filename):
 
 def encrypt_aes_text(key1,key2,text,replace_char="`"):
   text=text.replace("\n",replace_char)
+  remaining=len(text)%16 # text should have length multiple of 16
+  while remaining>0:
+    text=text+"-"
+    remaining=remaining-1
+    
+  remaining=len(key1)%16 # key1 should have length multiple of 16
+  while remaining>0:
+    key1=key1+"-"
+    remaining=remaining-1
+
+  remaining=len(key2)%16 # key2 should have length multiple of 16
+  while remaining>0:
+    key2=key2+"-"
+    remaining=remaining-1
+
   encrypt_obj = AES.new(key1, AES.MODE_CBC,key2)
   encrypt_text=encrypt_obj.encrypt(text)
   return encrypt_text
@@ -28,14 +43,50 @@ def gen_qr_aes_text(key1,key2,text,output_file="output.png",replace_char="`"):
   generate_qr(file_data,output_file)
 
 def decrypt_aes_file(key1,key2,text,output_file="result.txt",replace_char="`"):
-  text=text.replace(replace_char,"\n")
+  remaining=len(key1)%16 # text should have length multiple of 16
+  while remaining>0:
+    key1=key1+"-"
+    remaining=remaining-1
+
+  remaining=len(key2)%16 # text should have length multiple of 16
+  while remaining>0:
+    key2=key2+"-"
+    remaining=remaining-1
+
   decrypt_text = AES.new(key1, AES.MODE_CBC,key2)
-  write_file=open(output_file,"w")
+  
+  is_out=0
+  while is_out!=1:
+    if decrypt_text[-1]=='-':
+      decrypt_text=decrypt_text[:-1]
+    else:
+      is_out=1
+      
+  write_file=open(output_file,"w")  
+  decrypt_text=decrypt_text.replace(replace_char,"\n")
   write_file.write(decrypt_text)
   write_file.close()
 
+  
 def decrypt_aes_text(key1,key2,text,replace_char="`"):
-  text=text.replace(replace_char,"\n")
+  remaining=len(key1)%16 # text should have length multiple of 16
+  while remaining>0:
+    key1=key1+"-"
+    remaining=remaining-1
+
+  remaining=len(key2)%16 # text should have length multiple of 16
+  while remaining>0:
+    key2=key2+"-"
+    remaining=remaining-1
+
   decrypt_obj = AES.new(key1, AES.MODE_CBC,key2)
   decrypt_text=decrypt_obj.decrypt(text)
+  
+  is_out=0
+  while is_out!=1:
+    if decrypt_text[-1]=='-':
+      decrypt_text=decrypt_text[:-1]
+    else:
+      is_out=1    
+  decrypt_text=decrypt_text.replace(replace_char,"\n")
   return decrypt_text
