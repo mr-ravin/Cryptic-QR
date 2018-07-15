@@ -46,3 +46,4 @@ cq.output_text(text,replace_char="`") # text represents the output text of QR co
 ```
 
 Note: Currenlty, we are working on improving the encryption mechanism, so it is adviced to not use encryption, till this line is present in this documentation page.
+### When using text file as input, end file with a new line.
