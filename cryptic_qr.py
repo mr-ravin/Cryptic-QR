@@ -13,6 +13,16 @@ def generate_qr_file(input_file,output_img="output.png",replace_char="`"):
   command="qrencode -o "+str(output_img)+" \""+str(text)+"\""
   os.system(command)
   
+def output_file(text,output_file="result.txt",replace_char="`"):
+  text=text.replace(replace_char,"\n")
+  write_file=open(output_file,"w")
+  write_file.write(text)
+  write_file.close()
+  
+def output_text(text,replace_char="`"):
+  text=text.replace(replace_char,"\n")
+  return text
+
 #### below code is under continuous development 
 def encrypt_aes_text(key1,key2,text,replace_char="`"):
   text=text.replace("\n",replace_char)
