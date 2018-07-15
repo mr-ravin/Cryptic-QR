@@ -2,10 +2,18 @@ import sys
 import os
 from Crypto.Cipher import AES
 
-def generate_qr(text,filename):
-  command="qrencode -o "+str(filename)+" \""+str(text)+"\""
+def generate_qr(text,output_img="output.png"):
+  command="qrencode -o "+str(output_img)+" \""+str(text)+"\""
   os.system(command)
 
+def generate_qr_file(input_file,output_img="output.png",replace_char="`"):
+  read_data=open(input_file,"r")
+  text=read_data.read()
+  text=text.replace("\n",replace_char)
+  command="qrencode -o "+str(output_img)+" \""+str(text)+"\""
+  os.system(command)
+  
+#### below code is under continuous development 
 def encrypt_aes_text(key1,key2,text,replace_char="`"):
   text=text.replace("\n",replace_char)
   remaining=len(text)%16 # text should have length multiple of 16
@@ -28,7 +36,7 @@ def encrypt_aes_text(key1,key2,text,replace_char="`"):
   return encrypt_text
 
 def gen_qr_aes_file(key1,key2,file_name,replace_char="`"):
-  file_dat=open(file_name)
+  file_dat=open(file_name,"r")
   file_data=file_dat.read()
   file_data=file_data.replace("\n",replace_char)
   file_data=encrypt_aes_text(key1,key2,file_data)
