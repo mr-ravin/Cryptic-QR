@@ -1,6 +1,8 @@
 # Cryptic-QR
 This repository contains QR code generation mechanism from a text present in a file. After performing encryption over the text, it then creates the QR code.
 
+#### Code Developer: [Ravin Kumar](https://mr-ravin.github.io)
+
 ## Pre-Requisite
 - [pycrypto](https://pypi.org/project/pycrypto/)
 
